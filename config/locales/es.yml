@@ -1,6 +1,6 @@
 es:
   app:
-    name: "Cartera CRM"
+    name: "Faro Cobranza"
     tagline: "Gestión de cobranza"
   nav:
     dashboard: "Tablero"
@@ -67,6 +67,7 @@ es:
         product: "Producto"
         principal_balance: "Saldo de capital"
         days_past_due: "Días de mora"
+        past_due_since: "En mora desde"
         status: "Estado"
         disbursed_on: "Desembolso"
         client: "Cliente"
@@ -165,6 +166,14 @@ es:
       created: "Acuerdo de pago registrado."
     api_tokens:
       revoked: "Token revocado."
+
+  passwords_mailer:
+    reset:
+      subject: "Restablece tu contraseña de %{app}"
+      greeting: "Hola, %{name}:"
+      intro: "Recibimos una solicitud para restablecer tu contraseña en %{app}."
+      action: "Crear una contraseña nueva"
+      expires: "El enlace vence en %{time}. Si no fuiste tú, ignora este correo: tu contraseña actual sigue funcionando."
 
   pagination:
     previous: "Anterior"

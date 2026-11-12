@@ -1,6 +1,12 @@
-<p>
-  You can reset your password on
-  <%= link_to "this password reset page", edit_password_url(@user.password_reset_token) %>.
+<p><%= t(".greeting", name: @user.name.presence || @user.email_address) %></p>
 
-  This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.
+<p><%= t(".intro", app: t("app.name")) %></p>
+
+<p>
+  <%= link_to t(".action"), edit_password_url(@user.password_reset_token),
+        style: "display:inline-block;padding:10px 18px;border-radius:8px;background:#0d9488;color:#ffffff;text-decoration:none;font-weight:600" %>
+</p>
+
+<p style="color:#475569;font-size:14px">
+  <%= t(".expires", time: distance_of_time_in_words(0, @user.password_reset_token_expires_in)) %>
 </p>
