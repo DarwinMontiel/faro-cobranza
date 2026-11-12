@@ -2,7 +2,7 @@
 <section class="auth">
   <div class="auth__card">
     <div class="auth__brand">
-      <span class="logo" aria-hidden="true">C</span>
+      <img class="logo" src="/icon.svg" alt="" width="36" height="36">
       <div><strong><%= t("app.name") %></strong><small><%= t("app.tagline") %></small></div>
     </div>
     <h1>Iniciar sesión</h1>
@@ -20,7 +20,7 @@
     <% end %>
     <p class="auth__links"><%= link_to "¿Olvidaste tu contraseña?", new_password_path %></p>
     <% if Rails.env.development? %>
-      <p class="hint">Demo: <code>admin@cartera.test</code> · contraseña definida en <code>db/seeds.rb</code></p>
+      <p class="hint">Demo: <code>admin@faro.test</code> · contraseña definida en <code>db/seeds.rb</code></p>
     <% end %>
   </div>
 </section>
