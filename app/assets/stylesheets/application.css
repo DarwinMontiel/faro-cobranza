@@ -252,4 +252,6 @@ input:not([type=hidden], [type=submit], [type=checkbox]), select, textarea {
   .main { padding: 18px 16px 40px; }
   .bars li { grid-template-columns: 56px 1fr; }
   .bars__value { grid-column: 2; text-align: left; }
+  /* Tablas fuera de .table-wrap: que se deslicen en vez de desbordar la página. */
+  .card > .table, .installments .table { display: block; overflow-x: auto; }
 }
