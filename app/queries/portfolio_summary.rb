@@ -1,4 +1,6 @@
-# Indicadores del tablero en una sola consulta agregada (sin cargar registros en memoria).
+# Indicadores del tablero con consultas agregadas en la base, sin cargar registros en memoria:
+# un SELECT con SUM/COUNT ... FILTER para los saldos de la cartera y un COUNT por cada indicador
+# de actividad (gestiones, acuerdos, promesas y cuotas viven en tablas distintas).
 class PortfolioSummary
   Snapshot = Data.define(
     :obligations, :total_balance, :past_due_balance, :par30, :past_due_count,
@@ -38,11 +40,13 @@ class PortfolioSummary
     )
   end
 
-  # Saldo por franja de mora para el gráfico de barras.
+  # Saldo por franja de mora para el gráfico de barras, en una sola consulta (SUM ... FILTER).
   def self.balance_by_bucket(scope: Obligation.all)
     scope = scope.where.not(status: %i[paid_off charged_off])
-    Obligation::BUCKETS.to_h do |bucket, range|
-      [ bucket, scope.where(days_past_due: range).sum(:principal_balance) ]
+    sums = Obligation::BUCKETS.values.map do |range|
+      condition = range.end ? [ "days_past_due BETWEEN ? AND ?", range.begin, range.end ] : [ "days_past_due >= ?", range.begin ]
+      Arel.sql("COALESCE(SUM(principal_balance) FILTER (WHERE #{Obligation.sanitize_sql_array(condition)}), 0)")
     end
+    Obligation::BUCKETS.keys.zip(scope.pick(*sums)).to_h
   end
 end

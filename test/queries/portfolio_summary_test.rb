@@ -1,7 +1,7 @@
 require "test_helper"
 
 class PortfolioSummaryTest < ActiveSupport::TestCase
-  test "calcula saldos, PAR30 y actividad del día con una consulta agregada" do
+  test "calcula saldos, PAR30 y actividad del día con consultas agregadas" do
     summary = PortfolioSummary.call
 
     assert_equal 3, summary.obligations
@@ -19,10 +19,12 @@ class PortfolioSummaryTest < ActiveSupport::TestCase
     assert_equal 3_450_000, PortfolioSummary.call.total_balance
   end
 
-  test "agrupa el saldo por franja de mora" do
-    buckets = PortfolioSummary.balance_by_bucket
+  test "agrupa el saldo por franja de mora en una sola consulta" do
+    buckets = assert_queries_count(1) { PortfolioSummary.balance_by_bucket }
     assert_equal Obligation::BUCKETS.keys, buckets.keys
     assert_equal 2_450_000, buckets["31-60"]
     assert_equal 1_000_000, buckets["91-180"]
+    assert_equal 8_000_000, buckets["Al día"]
+    assert_equal 0, buckets[">180"]
   end
 end
