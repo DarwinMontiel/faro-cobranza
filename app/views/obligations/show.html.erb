@@ -21,7 +21,7 @@
   <article class="kpi">
     <h2>Mora</h2>
     <p><%= @obligation.days_past_due %> días</p>
-    <small><%= bucket_badge(@obligation) %></small>
+    <small><%= bucket_badge(@obligation) %><% if @obligation.past_due_since %> · desde el <%= l(@obligation.past_due_since) %><% end %></small>
   </article>
   <article class="kpi">
     <h2>Estado</h2>

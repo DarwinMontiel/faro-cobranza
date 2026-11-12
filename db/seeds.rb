@@ -49,7 +49,7 @@ ActiveRecord::Base.transaction do
         number: format("OB-%07d", sequence),
         product: Obligation.products.keys.sample(random: rng),
         principal_balance: (rng.rand(800_000..25_000_000) / 1000) * 1000,
-        days_past_due: days,
+        past_due_since: days.positive? ? Date.current - days : nil,
         status: days.positive? ? :delinquent : :current,
         disbursed_on: Date.current - rng.rand(120..1_200)
       )

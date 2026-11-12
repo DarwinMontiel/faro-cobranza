@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_05_194500) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -88,8 +88,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_05_194500) do
     t.date "disbursed_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "past_due_since"
     t.index ["client_id"], name: "index_obligations_on_client_id"
     t.index ["number"], name: "index_obligations_on_number", unique: true
+    t.index ["past_due_since"], name: "index_obligations_on_past_due_since", where: "(past_due_since IS NOT NULL)"
     t.index ["status", "days_past_due"], name: "index_obligations_on_status_and_days_past_due"
     t.check_constraint "days_past_due >= 0", name: "obligations_days_past_due_non_negative"
     t.check_constraint "principal_balance >= 0::numeric", name: "obligations_balance_non_negative"

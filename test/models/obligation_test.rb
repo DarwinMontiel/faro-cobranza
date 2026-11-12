@@ -15,6 +15,17 @@ class ObligationTest < ActiveSupport::TestCase
     assert_equal 2, Obligation.past_due.count
   end
 
+  test "deriva los días de mora de la fecha de vencimiento al guardar" do
+    obligation = obligations(:laura_loan)
+    obligation.update!(past_due_since: Date.current - 31)
+    assert_equal 31, obligation.days_past_due
+    assert_equal "31-60", obligation.bucket
+
+    obligation.update!(past_due_since: nil)
+    assert_equal 0, obligation.days_past_due
+    assert_equal 0, Obligation.days_past_due_on(Date.current + 5), "un vencimiento futuro no genera mora"
+  end
+
   test "calcula el mínimo para un acuerdo con la política de cobertura" do
     assert_equal BigDecimal("1470000"), obligations(:laura_card).minimum_agreement_amount
   end

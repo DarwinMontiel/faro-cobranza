@@ -2,6 +2,7 @@ class PaymentAgreement < ApplicationRecord
   MIN_COVERAGE = BigDecimal("0.6")   # el acuerdo debe cubrir al menos el 60 % del saldo
   MAX_COVERAGE = BigDecimal("1.5")   # y no más del 150 % (capital + intereses de mora)
   MAX_INSTALLMENTS = 36
+  GRACE_DAYS = 5 # días de gracia después del vencimiento de una cuota antes de declarar el incumplimiento
 
   # Calendario de días hábiles inyectable (en pruebas se reemplaza por uno sin red).
   class_attribute :calendar_override, instance_accessor: false
@@ -30,6 +31,26 @@ class PaymentAgreement < ApplicationRecord
   validate :coverage_within_policy, if: -> { obligation && total_amount }
   validate :due_dates_are_valid, on: :create
   validate :single_active_agreement, if: :active?
+
+  # Acuerdos vigentes con alguna cuota impaga vencida hace más de GRACE_DAYS días.
+  scope :overdue_beyond_grace, ->(as_of = Date.current) {
+    active.where(id: Installment.where(paid_at: nil).where(due_on: ...(as_of - GRACE_DAYS)).select(:payment_agreement_id))
+  }
+
+  # Marca como incumplidos los acuerdos vencidos y devuelve sus obligaciones a "en mora".
+  # Devuelve las referencias afectadas (para el log del job).
+  def self.mark_broken!(as_of: Date.current)
+    transaction do
+      agreements = overdue_beyond_grace(as_of).lock.pluck(:id, :obligation_id, :reference)
+      return [] if agreements.empty?
+
+      ids, obligation_ids, references = agreements.transpose
+      now = Time.current
+      where(id: ids).update_all(status: "broken", updated_at: now)
+      Obligation.in_agreement.where(id: obligation_ids).update_all(status: "delinquent", updated_at: now)
+      references
+    end
+  end
 
   def paid_amount
     installments.select(&:paid?).sum(&:amount)

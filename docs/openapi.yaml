@@ -183,7 +183,8 @@ components:
         number: { type: string }
         product: { type: string, enum: [credit_card, personal_loan, microcredit, vehicle] }
         principal_balance: { type: string, description: "Decimal como string" }
-        days_past_due: { type: integer }
+        days_past_due: { type: integer, description: "Calculado a partir de past_due_since; se recalcula cada día" }
+        past_due_since: { type: string, format: date, nullable: true, description: "Vencimiento impago más antiguo" }
         bucket: { type: string }
         status: { $ref: "#/components/schemas/ObligationStatus" }
         disbursed_on: { type: string, format: date }

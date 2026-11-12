@@ -4,6 +4,7 @@ laura_card:
   product: credit_card
   principal_balance: 2450000
   days_past_due: 45
+  past_due_since: <%= (Date.current - 45).to_fs(:db) %>
   status: delinquent
   disbursed_on: 2024-03-10
 
@@ -22,5 +23,6 @@ andres_micro:
   product: microcredit
   principal_balance: 1000000
   days_past_due: 120
+  past_due_since: <%= (Date.current - 120).to_fs(:db) %>
   status: in_agreement
   disbursed_on: 2024-06-01
