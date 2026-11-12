@@ -1,4 +1,4 @@
-# This file is used by Rack-based servers to start the application.
+# Punto de entrada para servidores Rack (Puma).
 
 require_relative "config/environment"
 

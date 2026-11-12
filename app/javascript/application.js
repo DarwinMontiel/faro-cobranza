@@ -1,3 +1,3 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+// Punto de entrada JavaScript (import map en config/importmap.rb): Turbo + controladores Stimulus.
 import "@hotwired/turbo-rails"
 import "controllers"

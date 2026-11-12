@@ -1,4 +1,4 @@
-# Pin npm packages by running ./bin/importmap
+# Paquetes JavaScript fijados con ./bin/importmap (sin Node ni bundler).
 
 pin "application"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
