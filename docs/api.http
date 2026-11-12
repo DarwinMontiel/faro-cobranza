@@ -1,0 +1,68 @@
+# Probar la API en 30 segundos
+#
+# 1. bin/rails db:seed imprime un token de demostración ("Token de API de demostración: faro_...").
+# 2. Pégalo en @token y ejecuta cada solicitud con la extensión REST Client de VS Code
+#    ("Send Request" sobre cada bloque). Los números de obligación corresponden al seed.
+# Referencia completa: docs/api.md y docs/openapi.yaml.
+
+@base = http://localhost:3000/api/v1
+@token = faro_PEGA_AQUI_EL_TOKEN_DEL_SEED
+
+### Obligaciones en la franja 31-60 días de mora
+GET {{base}}/obligations?bucket=31-60&per_page=5
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Detalle de una obligación en mora y sin acuerdo
+GET {{base}}/obligations/OB-0000007
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Registrar una gestión con promesa de pago, como lo haría un bot de WhatsApp (201)
+POST {{base}}/collection_activities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "obligation_number": "OB-0000007",
+  "channel": "whatsapp",
+  "outcome": "promise_to_pay",
+  "promise_date": "{{$datetime 'YYYY-MM-DD' 3 d}}",
+  "promise_amount": 350000,
+  "notes": "Cliente responde por WhatsApp y promete pagar en tres días"
+}
+
+### Registrar un acuerdo de pago: envíalo dos veces. 201 la primera; 200 y el mismo acuerdo la segunda.
+# Si estas fechas ya pasaron, usa cualquier par de días hábiles futuros.
+POST {{base}}/payment_agreements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "obligation_number": "OB-0000007",
+  "reference": "rpa-task-demo-0001",
+  "total_amount": 1200000,
+  "installments": [
+    { "number": 1, "due_on": "2027-02-01", "amount": 600000 },
+    { "number": 2, "due_on": "2027-03-01", "amount": 600000 }
+  ]
+}
+
+### Consultar el acuerdo registrado
+GET {{base}}/payment_agreements/rpa-task-demo-0001
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Una cuota el 20 de julio (festivo): 422 con el detalle de la fecha rechazada
+POST {{base}}/payment_agreements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "obligation_number": "OB-0000040",
+  "reference": "rpa-task-demo-festivo",
+  "total_amount": 2000000,
+  "installments": [
+    { "number": 1, "due_on": "2027-07-20", "amount": 2000000 }
+  ]
+}

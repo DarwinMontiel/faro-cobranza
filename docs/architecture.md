@@ -16,7 +16,7 @@ flowchart LR
         S --> HC
     end
     UI -- "Turbo Drive / Frames / Streams" --> C
-    BOT[Bots RPA<br/>rpa-orchestrator] -- JSON --> A
+    BOT[Bots RPA<br/>colmena-rpa] -- JSON --> A
     M --> PG[(PostgreSQL<br/>restricciones + índices)]
     Rails --> SQ[Solid Queue / Cache / Cable]
 ```
@@ -29,7 +29,7 @@ flowchart LR
 | API | `app/controllers/api/v1`, `app/views/api/v1/*.jbuilder` | Autenticación por token, errores uniformes, límite de solicitudes |
 | Casos de uso | `app/services/register_payment_agreement.rb` | Transacciones e idempotencia |
 | Dominio | `app/models` | Reglas de negocio (cobertura del acuerdo, promesas, franjas de mora) |
-| Integraciones | `app/services/holiday_calendar.rb` | API externa con *timeouts*, caché y respaldo |
+| Integraciones | `app/services/holiday_calendar.rb`, `colombian_holidays.rb` | API externa con *timeouts* y caché; respaldo calculado por ley para cualquier año |
 | Consultas | `app/queries/portfolio_summary.rb` | Agregaciones del tablero en SQL (sin cargar registros) |
 | Interfaz | `app/views`, `app/javascript/controllers` | Turbo Frames/Streams y 6 controladores Stimulus |
 
@@ -61,6 +61,24 @@ Cada regla crítica existe en el modelo (mensaje claro al usuario) **y** en la b
 La búsqueda por nombre usa un índice **GIN con trigramas** (`pg_trgm`) para que
 `ILIKE '%texto%'` no recorra toda la tabla.
 
+## Mora y ciclo de vida del acuerdo
+
+Los días de mora no se escriben a mano: se derivan de `past_due_since` (vencimiento impago más
+antiguo). `days_past_due` es un valor materializado para ordenar e indexar la bandeja de cobro, y
+`RefreshDelinquencyJob` lo recalcula cada madrugada con un solo `UPDATE` que solo toca las filas que
+cambian. El mismo job declara incumplidos los acuerdos con cuotas vencidas hace más de 5 días.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Vigente: gestor o bot registra el acuerdo
+    Vigente --> Incumplido: cuota impaga + 5 días de gracia (job diario)
+    Vigente --> Cumplido: todas las cuotas pagadas (hoja de ruta)
+    Vigente --> Anulado: anulación manual (hoja de ruta)
+    Incumplido --> [*]: la obligación vuelve a la bandeja de cobro
+    Cumplido --> [*]
+    Anulado --> [*]
+```
+
 ## Modelo de datos
 
 ```mermaid
@@ -73,7 +91,7 @@ erDiagram
     obligations ||--o{ payment_agreements : tiene
     payment_agreements ||--|{ installments : "se paga en"
     clients { string document_number UK; string full_name; string city; string segment }
-    obligations { string number UK; string product; decimal principal_balance; int days_past_due; string status }
+    obligations { string number UK; string product; decimal principal_balance; int days_past_due; date past_due_since; string status }
     collection_activities { string channel; string outcome; datetime occurred_at; date promise_date; decimal promise_amount; string source }
     payment_agreements { string reference UK; decimal total_amount; string status }
     installments { int number; date due_on; decimal amount; datetime paid_at }
@@ -86,5 +104,5 @@ erDiagram
 |---|---|
 | [0001](adr/0001-hotwire-en-lugar-de-spa.md) | Hotwire (HTML desde el servidor) en lugar de una SPA |
 | [0002](adr/0002-reglas-en-modelo-y-base.md) | Reglas críticas en el modelo **y** en PostgreSQL |
-| [0003](adr/0003-calendario-de-festivos-con-respaldo.md) | Festivos desde una API pública con caché y respaldo versionado |
+| [0003](adr/0003-calendario-de-festivos-con-respaldo.md) | Festivos desde una API pública con respaldo calculado por ley |
 | [0004](adr/0004-tokens-de-api-con-hash.md) | Tokens de API aleatorios guardados como SHA-256 |

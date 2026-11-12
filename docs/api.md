@@ -1,7 +1,8 @@
 # API REST v1
 
 API JSON para integraciones: consultar cartera y registrar gestiones y acuerdos de pago desde
-sistemas externos, por ejemplo los bots de [rpa-orchestrator](https://github.com/DarwinMontiel/rpa-orchestrator).
+sistemas externos, por ejemplo los bots de [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa).
+Para probarla en 30 segundos: [api.http](api.http) (extensión REST Client de VS Code o el cliente HTTP de JetBrains).
 Especificación formal: [openapi.yaml](openapi.yaml).
 
 ## Autenticación
@@ -54,8 +55,8 @@ Los montos se devuelven como *string* decimal (`"2450000.0"`) para no perder pre
 ### Registrar una gestión (bot de llamadas)
 
 ```bash
-curl -X POST https://crm.example.com/api/v1/collection_activities \
-  -H "Authorization: Bearer $CRM_TOKEN" -H "Content-Type: application/json" \
+curl -X POST https://faro.example.com/api/v1/collection_activities \
+  -H "Authorization: Bearer $FARO_TOKEN" -H "Content-Type: application/json" \
   -d '{
         "obligation_number": "OB-0000001",
         "channel": "call",
@@ -73,8 +74,8 @@ curl -X POST https://crm.example.com/api/v1/collection_activities \
 ### Registrar un acuerdo de pago (idempotente)
 
 ```bash
-curl -X POST https://crm.example.com/api/v1/payment_agreements \
-  -H "Authorization: Bearer $CRM_TOKEN" -H "Content-Type: application/json" \
+curl -X POST https://faro.example.com/api/v1/payment_agreements \
+  -H "Authorization: Bearer $FARO_TOKEN" -H "Content-Type: application/json" \
   -d '{
         "obligation_number": "OB-0000001",
         "reference": "rpa-task-7f3c2a",
@@ -90,3 +91,28 @@ curl -X POST https://crm.example.com/api/v1/payment_agreements \
   `reference` (por ejemplo, tras un *timeout* del bot). Nunca se duplica.
 - `422` si el total no cubre el 60 % del saldo, supera el 150 %, las cuotas no suman el total,
   alguna cae en fin de semana o festivo, o la obligación ya tiene un acuerdo vigente.
+
+#### Reintentos e idempotencia
+
+Un bot que pierde la respuesta por un *timeout* no sabe si el acuerdo quedó registrado. Por eso
+reintenta **con la misma `reference`**: el CRM responde con el acuerdo existente en lugar de
+crear uno duplicado. Esto se cumple incluso si los dos envíos llegan al mismo tiempo: el que
+pierde la carrera (por validación o por el índice único de la base) vuelve a buscar la referencia
+y responde `200` con el acuerdo ganador.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Bot as Bot RPA (colmena-rpa)
+    participant API as Faro Cobranza · API v1
+    participant DB as PostgreSQL
+    Bot->>API: POST /payment_agreements (reference: rpa-task-7f3c2a)
+    API->>DB: INSERT acuerdo + cuotas (una transacción)
+    DB-->>API: OK
+    API--xBot: 201 Created (la respuesta se pierde por timeout)
+    Note over Bot: El bot no sabe si quedó registrado y reintenta
+    Bot->>API: POST /payment_agreements (misma reference)
+    API->>DB: SELECT por reference
+    DB-->>API: acuerdo existente
+    API-->>Bot: 200 OK con el mismo acuerdo (sin duplicar)
+```
