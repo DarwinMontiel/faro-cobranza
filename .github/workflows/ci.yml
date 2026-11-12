@@ -45,7 +45,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Cache de RuboCop
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.RUBOCOP_CACHE_ROOT }}
           key: rubocop-${{ runner.os }}-${{ hashFiles('.ruby-version', '**/.rubocop.yml', 'Gemfile.lock') }}
@@ -113,6 +113,6 @@ jobs:
         with:
           context: .
           push: false
-          tags: cartera-crm:ci
+          tags: faro-cobranza:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -9,7 +9,7 @@ module Api
         assert_equal "unauthorized", json.dig("error", "code")
         assert_match(/Bearer/, response.headers["WWW-Authenticate"])
 
-        get api_v1_clients_path, headers: api_headers("crm_test_token_revoked")
+        get api_v1_clients_path, headers: api_headers("faro_test_token_revoked")
         assert_response :unauthorized
       end
 

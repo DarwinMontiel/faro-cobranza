@@ -10,7 +10,7 @@ Token Bearer creado en **Integraciones API** (`/api_tokens`). Se muestra una sol
 solo queda su SHA-256 y puede revocarse en cualquier momento.
 
 ```http
-Authorization: Bearer crm_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Authorization: Bearer faro_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 Límite: 300 solicitudes por minuto por token (`429 rate_limited`).

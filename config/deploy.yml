@@ -5,8 +5,8 @@
 #   kamal deploy     # despliegues siguientes (cero downtime)
 #   kamal app logs -f
 
-service: cartera_crm
-image: darwinmontiel/cartera-crm
+service: faro_cobranza
+image: darwinmontiel/faro-cobranza
 
 servers:
   web:
@@ -18,7 +18,7 @@ servers:
 
 proxy:
   ssl: true                 # certificado Let's Encrypt automático
-  host: crm.example.com
+  host: faro.example.com     # dominio de la app (debe coincidir con APP_HOST)
   healthcheck:
     path: /up
 
@@ -31,9 +31,15 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
-    - CARTERA_CRM_DATABASE_PASSWORD
+    - FARO_COBRANZA_DATABASE_PASSWORD
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
   clear:
-    DB_HOST: cartera_crm-db
+    DB_HOST: faro_cobranza-db
+    APP_HOST: faro.example.com               # host de los enlaces de los correos
+    MAILER_FROM: "Faro Cobranza <no-responder@faro.example.com>"
+    SMTP_ADDRESS: smtp.example.com           # vacío = no se envían correos
+    SMTP_PORT: 587
     RAILS_LOG_TO_STDOUT: true
 
 aliases:
@@ -43,7 +49,7 @@ aliases:
   dbc: app exec --interactive --reuse "bin/rails dbconsole --include-password"
 
 volumes:
-  - "cartera_crm_storage:/rails/storage"
+  - "faro_cobranza_storage:/rails/storage"
 
 asset_path: /rails/public/assets
 
@@ -57,8 +63,8 @@ accessories:
     port: "127.0.0.1:5432:5432"   # solo accesible desde el propio servidor
     env:
       clear:
-        POSTGRES_USER: cartera_crm
-        POSTGRES_DB: cartera_crm_production
+        POSTGRES_USER: faro_cobranza
+        POSTGRES_DB: faro_cobranza_production
       secret:
         - POSTGRES_PASSWORD
     directories:

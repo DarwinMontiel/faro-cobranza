@@ -44,7 +44,7 @@ module ActiveSupport
 end
 
 module ApiTestHelper
-  VALID_TOKEN = "crm_test_token_valid".freeze
+  VALID_TOKEN = "faro_test_token_valid".freeze
 
   def api_headers(token = VALID_TOKEN)
     { "Authorization" => "Bearer #{token}", "Accept" => "application/json" }

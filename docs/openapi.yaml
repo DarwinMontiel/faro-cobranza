@@ -1,13 +1,13 @@
 openapi: 3.1.0
 info:
-  title: Cartera CRM API
+  title: Faro Cobranza API
   version: "1.0.0"
   description: >
     API REST para integraciones de cobranza: consulta de clientes y obligaciones, registro de
     gestiones y de acuerdos de pago idempotentes.
   contact:
     name: Darwin Montiel Mora
-    url: https://github.com/DarwinMontiel/cartera-crm
+    url: https://github.com/DarwinMontiel/faro-cobranza
   license:
     name: MIT
 servers:
@@ -152,7 +152,7 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth: { type: http, scheme: bearer, description: "Token crm_… creado en Integraciones API" }
+    bearerAuth: { type: http, scheme: bearer, description: "Token faro_… creado en Integraciones API" }
   parameters:
     page: { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
     perPage: { name: per_page, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }

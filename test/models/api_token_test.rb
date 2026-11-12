@@ -15,10 +15,15 @@ class ApiTokenTest < ActiveSupport::TestCase
   end
 
   test "rechaza tokens revocados, desconocidos o sin prefijo" do
-    assert_nil ApiToken.authenticate("crm_test_token_revoked")
-    assert_nil ApiToken.authenticate("crm_no_existe")
+    assert_nil ApiToken.authenticate("faro_test_token_revoked")
+    assert_nil ApiToken.authenticate("faro_no_existe")
     assert_nil ApiToken.authenticate("sin-prefijo")
     assert_nil ApiToken.authenticate(nil)
+  end
+
+  test "los tokens emitidos con el prefijo anterior siguen funcionando" do
+    assert_equal api_tokens(:legacy), ApiToken.authenticate("crm_test_token_legacy")
+    assert users(:agent).api_tokens.create!(name: "Nuevo").plain_token.start_with?("faro_")
   end
 
   test "revocar deja el token inutilizable" do

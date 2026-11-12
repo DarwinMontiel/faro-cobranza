@@ -1,7 +1,10 @@
 # Token de acceso a la API para integraciones (p. ej. bots RPA que registran gestiones).
 # Se muestra una sola vez al crearlo; en la base solo queda su SHA-256.
 class ApiToken < ApplicationRecord
-  PREFIX = "crm_".freeze
+  PREFIX = "faro_".freeze
+  # Prefijo de los tokens emitidos antes del cambio de nombre (Cartera CRM): siguen funcionando
+  # hasta que se revoquen, para no romper integraciones existentes.
+  LEGACY_PREFIXES = [ "crm_" ].freeze
 
   belongs_to :user
 
@@ -19,7 +22,7 @@ class ApiToken < ApplicationRecord
   end
 
   def self.authenticate(token)
-    return if token.blank? || !token.start_with?(PREFIX)
+    return if token.blank? || !token.start_with?(PREFIX, *LEGACY_PREFIXES)
 
     usable.find_by(token_digest: digest(token))&.tap do |api_token|
       # Evita una escritura por request: actualiza como máximo una vez por minuto.

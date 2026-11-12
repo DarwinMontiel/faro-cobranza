@@ -1,11 +1,16 @@
-# El token en claro de las pruebas es "crm_test_token_valid" (ver ApiTestHelper).
+# El token en claro de las pruebas es "faro_test_token_valid" (ver ApiTestHelper).
 bot:
   user: admin
   name: Bot de pruebas
-  token_digest: <%= OpenSSL::Digest::SHA256.hexdigest("crm_test_token_valid") %>
+  token_digest: <%= OpenSSL::Digest::SHA256.hexdigest("faro_test_token_valid") %>
 
 revoked:
   user: admin
   name: Token revocado
-  token_digest: <%= OpenSSL::Digest::SHA256.hexdigest("crm_test_token_revoked") %>
+  token_digest: <%= OpenSSL::Digest::SHA256.hexdigest("faro_test_token_revoked") %>
   revoked_at: <%= 1.day.ago.to_fs(:db) %>
+
+legacy:
+  user: admin
+  name: Bot con token anterior al cambio de nombre
+  token_digest: <%= OpenSSL::Digest::SHA256.hexdigest("crm_test_token_legacy") %>

@@ -9,7 +9,9 @@ auditables, separadas de las contraseñas de los usuarios.
 
 ## Decisión
 
-- Token = prefijo `crm_` + 32 caracteres base58 aleatorios (`SecureRandom`).
+- Token = prefijo `faro_` + 32 caracteres base58 aleatorios (`SecureRandom`). Los tokens
+  emitidos con el prefijo anterior al cambio de nombre (`crm_`) se siguen aceptando hasta que se
+  revoquen, para no romper integraciones existentes.
 - Se muestra **una sola vez** en la respuesta de creación (no pasa por flash ni por cookies).
 - En la base solo se guarda `SHA-256(token)`. SHA-256 sin sal es suficiente porque el token
   tiene alta entropía (no es una contraseña elegida por una persona); bcrypt agregaría latencia

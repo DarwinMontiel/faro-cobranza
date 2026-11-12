@@ -28,7 +28,7 @@ module Api
           @current_api_token = authenticate_with_http_token { |token, _options| ApiToken.authenticate(token) }
           return if @current_api_token
 
-          response.headers["WWW-Authenticate"] = 'Bearer realm="cartera-crm"'
+          response.headers["WWW-Authenticate"] = 'Bearer realm="faro-cobranza"'
           render_error(:unauthorized, "unauthorized", "Token de API inválido, revocado o ausente")
         end
 

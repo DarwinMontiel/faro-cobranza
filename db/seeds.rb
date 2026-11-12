@@ -1,7 +1,7 @@
 # Datos de demostración (sintéticos y reproducibles). Uso: bin/rails db:seed
 # Ningún dato corresponde a personas reales.
 
-DEMO_PASSWORD = ENV.fetch("DEMO_PASSWORD", "Cartera-Demo-2026")
+DEMO_PASSWORD = ENV.fetch("DEMO_PASSWORD", "Faro-Demo-2026")
 
 if Client.exists?
   puts "La base ya tiene datos: se omiten los seeds (usa bin/rails db:seed:replant para recrearlos)."
@@ -17,10 +17,10 @@ LAST_NAMES = %w[Gómez Rodríguez Martínez García López Hernández Pérez Sá
                 Castro Rojas Moreno Jiménez Muñoz Ortiz Rincón Suárez Herrera Medina Restrepo Cárdenas].freeze
 
 ActiveRecord::Base.transaction do
-  admin = User.create!(name: "Administradora Demo", email_address: "admin@cartera.test",
+  admin = User.create!(name: "Administradora Demo", email_address: "admin@faro.test",
                        password: DEMO_PASSWORD, role: :admin)
   agents = [ "Ana Lucía Ríos", "Hernán Quintero", "Mónica Arango" ].each_with_index.map do |name, i|
-    User.create!(name:, email_address: "gestor#{i + 1}@cartera.test", password: DEMO_PASSWORD, role: :agent)
+    User.create!(name:, email_address: "gestor#{i + 1}@faro.test", password: DEMO_PASSWORD, role: :agent)
   end
 
   documents = Set.new
@@ -87,7 +87,7 @@ ActiveRecord::Base.transaction do
   end
 
   token = admin.api_tokens.create!(name: "Bot RPA de acuerdos (demo)")
-  puts "Usuarios: admin@cartera.test y gestor1..3@cartera.test · contraseña: #{DEMO_PASSWORD}"
+  puts "Usuarios: admin@faro.test y gestor1..3@faro.test · contraseña: #{DEMO_PASSWORD}"
   puts "Token de API de demostración (solo se muestra ahora): #{token.plain_token}"
 end
 
