@@ -30,6 +30,7 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) · [SemVer](
   los años sin respaldo trataban los festivos como días hábiles.
 - El correo de restablecimiento salía en inglés, desde `from@example.com` y con enlaces a
   `example.com`.
+
 ## [1.0.0] - 2026-11-05
 
 ### Agregado

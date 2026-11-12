@@ -1,7 +1,7 @@
 # API REST v1
 
 API JSON para integraciones: consultar cartera y registrar gestiones y acuerdos de pago desde
-sistemas externos, por ejemplo los bots de [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa).
+sistemas externos, por ejemplo bots RPA como los de [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa).
 Para probarla en 30 segundos: [api.http](api.http) (extensión REST Client de VS Code o el cliente HTTP de JetBrains).
 Especificación formal: [openapi.yaml](openapi.yaml).
 
@@ -103,7 +103,7 @@ y responde `200` con el acuerdo ganador.
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Bot as Bot RPA (colmena-rpa)
+    participant Bot as Bot RPA
     participant API as Faro Cobranza · API v1
     participant DB as PostgreSQL
     Bot->>API: POST /payment_agreements (reference: rpa-task-7f3c2a)

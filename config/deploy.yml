@@ -2,7 +2,7 @@
 # Guía completa: docs/deployment.md
 #
 #   kamal setup      # primera vez: instala Docker, kamal-proxy, PostgreSQL y la app
-#   kamal deploy     # despliegues siguientes (cero downtime)
+#   kamal deploy     # despliegues siguientes (sin interrumpir el servicio)
 #   kamal app logs -f
 
 service: faro_cobranza
@@ -18,7 +18,7 @@ servers:
 
 proxy:
   ssl: true                 # certificado Let's Encrypt automático
-  host: faro.example.com     # dominio de la app (debe coincidir con APP_HOST)
+  host: faro.example.com    # dominio de la app (debe coincidir con APP_HOST)
   healthcheck:
     path: /up
 

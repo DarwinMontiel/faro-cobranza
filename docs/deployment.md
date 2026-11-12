@@ -18,7 +18,7 @@ export KAMAL_REGISTRY_PASSWORD=ghp_...            # token con permiso write:pack
 export FARO_COBRANZA_DATABASE_PASSWORD=...        # contraseña de la base de producción
 export SMTP_USERNAME=... SMTP_PASSWORD=...        # opcional: correo saliente
 kamal setup                                        # primera vez
-kamal deploy                                       # siguientes despliegues, sin downtime
+kamal deploy                                       # siguientes despliegues, sin interrumpir el servicio
 kamal app exec "bin/rails db:seed"                 # opcional: datos de demostración
 ```
 

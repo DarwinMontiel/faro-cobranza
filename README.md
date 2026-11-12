@@ -50,9 +50,8 @@ crédito de Laura Gómez amaneció con **47 días** de mora, en la franja `31-60
 cifra a mano: sale de la fecha del vencimiento impago más antiguo.
 
 **8:12 a. m.** En el historial de Laura ya hay una gestión de origen **"API / bot"**: un bot de
-WhatsApp ([colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa)) le escribió a las 7:30 y
-ella respondió que puede pagar, pero no todo de una vez. El bot la registró por la API con el
-resultado *contacto con titular*.
+WhatsApp le escribió a las 7:30 y ella respondió que puede pagar, pero no todo de una vez. El bot
+la registró por la API con el resultado *contacto con titular*.
 
 **9:40 a. m.** Mónica la llama. Laura acepta un **acuerdo a 3 cuotas** desde el viernes 19 de
 junio. Mónica escribe el total, pide 3 cuotas y pulsa **Generar plan**. El servidor arma el plan y
@@ -113,7 +112,7 @@ para la siguiente gestión.
 ```mermaid
 flowchart LR
     UI[Navegador<br/>Turbo + Stimulus] --> W[Controladores web]
-    BOT[Bots RPA<br/>colmena-rpa] -- Bearer token --> API[API v1]
+    BOT[Bots RPA<br/>e integraciones] -- Bearer token --> API[API v1]
     W & API --> SVC[Casos de uso<br/>RegisterPaymentAgreement]
     SVC --> M[Modelos con reglas<br/>de negocio]
     SVC --> HC[HolidayCalendar] -. HTTPS + caché .-> EXT[(API de festivos)]
@@ -248,8 +247,9 @@ test/                       # modelos, servicios, jobs, consultas, correo, contr
   Solid Queue para los procesos programados y Kamal para desplegar.
 - **La otra cara de los bots.** Construyo bots RPA que registran información en aplicativos de
   terceros. Aquí estoy del lado del aplicativo: una API pensada para bots, con tokens revocables,
-  errores uniformes e idempotencia ante reintentos. Es la contraparte de
-  [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa).
+  errores uniformes e idempotencia ante reintentos. En
+  [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa) los bots tienen que diligenciar un
+  portal web sin API; aquí está la alternativa que un bot preferiría encontrar.
 - **Datos confiables.** Las reglas que importan están también en PostgreSQL (`CHECK`, índices
   parciales y únicos), y la mora se calcula en lugar de escribirse a mano.
 
@@ -258,7 +258,8 @@ test/                       # modelos, servicios, jobs, consultas, correo, contr
 Proyectos del mismo portafolio sobre cobranza y automatización:
 
 - [colmena-rpa](https://github.com/DarwinMontiel/colmena-rpa): plataforma de bots RPA con
-  RabbitMQ, reintentos e idempotencia; sus bots registran gestiones y acuerdos en esta API.
+  RabbitMQ, reintentos e idempotencia, cuyos bots registran acuerdos de pago en un portal web; la
+  misma idea de idempotencia por referencia que usa esta API.
 - [torre-de-control](https://github.com/DarwinMontiel/torre-de-control): monitoreo en tiempo real de
   las colas y los bots de colmena-rpa.
 - [radar-cartera](https://github.com/DarwinMontiel/radar-cartera): ETL y analítica de cartera; usa

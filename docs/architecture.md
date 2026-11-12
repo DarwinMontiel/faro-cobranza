@@ -16,7 +16,7 @@ flowchart LR
         S --> HC
     end
     UI -- "Turbo Drive / Frames / Streams" --> C
-    BOT[Bots RPA<br/>colmena-rpa] -- JSON --> A
+    BOT[Bots RPA<br/>e integraciones] -- JSON --> A
     M --> PG[(PostgreSQL<br/>restricciones + índices)]
     Rails --> SQ[Solid Queue / Cache / Cable]
 ```
