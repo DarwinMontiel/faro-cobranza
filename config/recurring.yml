@@ -1,4 +1,4 @@
-﻿# Tareas programadas de Solid Queue (las ejecuta bin/jobs).
+# Tareas programadas de Solid Queue (las ejecuta bin/jobs).
 # Documentación: https://github.com/rails/solid_queue#recurring-tasks
 
 production:
