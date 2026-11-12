@@ -7,13 +7,14 @@ require_relative "test_helpers/session_test_helper"
 # Ninguna prueba sale a internet: las integraciones externas se simulan con WebMock.
 WebMock.disable_net_connect!(allow_localhost: true)
 
-# Calendario determinístico: fines de semana + festivos del respaldo versionado (sin red).
+# Calendario determinístico: fines de semana + festivos calculados por ley (sin red).
 class FakeCalendar
-  def initialize(holidays = HolidayCalendar.fallback_holidays.values.reduce(Set.new, :|))
-    @holidays = holidays.to_set
+  def initialize(holidays = nil)
+    @holidays = holidays&.to_set
+    @by_year = Hash.new { |memo, year| memo[year] = ColombianHolidays.dates(year) }
   end
 
-  def holiday?(date) = @holidays.include?(date)
+  def holiday?(date) = (@holidays || @by_year[date.year]).include?(date)
   def business_day?(date) = !date.saturday? && !date.sunday? && !holiday?(date)
 
   def next_business_day(date)

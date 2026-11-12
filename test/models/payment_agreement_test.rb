@@ -52,8 +52,8 @@ class PaymentAgreementTest < ActiveSupport::TestCase
   end
 
   test "rechaza un festivo según el calendario" do
-    holiday = HolidayCalendar.fallback_holidays.values.reduce(:|).select { |d| d > Date.current && !d.on_weekend? }.min
-    skip "no hay festivos futuros en el respaldo" unless holiday
+    holiday = [ Date.current.year, Date.current.year + 1 ].flat_map { |year| ColombianHolidays.dates(year).to_a }
+      .select { |d| d > Date.current && !d.on_weekend? }.min
 
     agreement = build_agreement(total: 2_000_000, installments: [ { number: 1, due_on: holiday, amount: 2_000_000 } ])
     assert agreement.tap(&:validate).errors.of_kind?(:installments, :non_business_days)
