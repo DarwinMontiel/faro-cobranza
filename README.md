@@ -282,7 +282,7 @@ Proyectos del mismo portafolio sobre cobranza y automatización:
 
 ## Autor
 
-**Darwin Montiel Mora** · Desarrollador RPA & Backend · Ingeniero de Sistemas · Bogotá, Colombia
+**Darwin Montiel Mora** · Desarrollador RPA & Backend · Bogotá, Colombia
 [LinkedIn](https://www.linkedin.com/in/darwin-montiel-mora-925216206) · [GitHub](https://github.com/DarwinMontiel)
 
 Datos de demostración 100 % sintéticos: ninguna persona, cliente ni entidad es real.
