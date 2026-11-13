@@ -2,7 +2,7 @@
 
 Formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) · [SemVer](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [1.1.0] - 2026-11-13
 
 ### Cambiado
 - El proyecto se llama ahora **Faro Cobranza** (antes "Cartera CRM"): módulo `FaroCobranza`, bases
@@ -48,5 +48,5 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) · [SemVer](
 - CI: Brakeman, bundler-audit, importmap audit, RuboCop, pruebas, pruebas de sistema y build Docker.
 - Despliegue con Kamal 2 (web, jobs, PostgreSQL, TLS).
 
-[Sin publicar]: https://github.com/DarwinMontiel/faro-cobranza/compare/v1.0.0...HEAD
+[1.1.0]: https://github.com/DarwinMontiel/faro-cobranza/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/DarwinMontiel/faro-cobranza/releases/tag/v1.0.0
