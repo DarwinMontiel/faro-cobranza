@@ -8,7 +8,7 @@ class BrandingTest < ActionDispatch::IntegrationTest
     manifest = JSON.parse(response.body)
     assert_equal "Faro Cobranza", manifest["name"]
     assert_match(/cobranza/i, manifest["description"])
-    assert_equal "#0f1f2e", manifest["theme_color"]
+    assert_equal "#1c1838", manifest["theme_color"]
     assert_equal [ "/icon.png", "/icon.svg" ], manifest["icons"].pluck("src")
   end
 

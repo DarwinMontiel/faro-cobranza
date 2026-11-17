@@ -1,21 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="t">
   <title id="t">Faro Cobranza</title>
-  <rect width="512" height="512" rx="112" fill="#0d9488"/>
-  <!-- haces de luz -->
-  <polygon points="256,152 36,92 36,212" fill="#ccfbf1" opacity="0.35"/>
-  <polygon points="256,152 476,92 476,212" fill="#ccfbf1" opacity="0.35"/>
+  <!-- noche índigo -->
+  <rect width="512" height="512" rx="112" fill="#1c1838"/>
+  <!-- haces de luz cálida: nacen en la linterna y se desvanecen -->
+  <defs>
+    <linearGradient id="haz-izq" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffd166" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffd166" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="haz-der" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffd166" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffd166" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  <polygon points="256,152 36,92 36,212" fill="url(#haz-izq)"/>
+  <polygon points="256,152 476,92 476,212" fill="url(#haz-der)"/>
   <!-- cúpula y linterna -->
-  <circle cx="256" cy="94" r="9" fill="#0f1f2e"/>
-  <path d="M212 134 Q256 86 300 134 Z" fill="#0f1f2e"/>
+  <circle cx="256" cy="94" r="9" fill="#d1453b"/>
+  <path d="M212 134 Q256 86 300 134 Z" fill="#d1453b"/>
   <rect x="222" y="134" width="68" height="40" rx="6" fill="#fde68a"/>
   <rect x="252" y="134" width="8" height="40" fill="#f59e0b" opacity="0.6"/>
-  <rect x="204" y="174" width="104" height="14" rx="5" fill="#0f1f2e"/>
-  <!-- torre con franjas -->
+  <rect x="204" y="174" width="104" height="14" rx="5" fill="#e4e1f5"/>
+  <!-- torre con franjas rojas -->
   <polygon points="226,188 286,188 310,400 202,400" fill="#ffffff"/>
-  <polygon points="220.4,236 291.6,236 295,266 217,266" fill="#0f1f2e"/>
-  <polygon points="211.4,316 300.6,316 303.9,346 208.1,346" fill="#0f1f2e"/>
-  <rect x="244" y="364" width="24" height="36" rx="12" fill="#0f766e"/>
+  <polygon points="220.4,236 291.6,236 295,266 217,266" fill="#d1453b"/>
+  <polygon points="211.4,316 300.6,316 303.9,346 208.1,346" fill="#d1453b"/>
+  <rect x="244" y="364" width="24" height="36" rx="12" fill="#4338ca"/>
   <!-- base y olas -->
-  <rect x="150" y="398" width="212" height="18" rx="9" fill="#0f1f2e"/>
-  <path d="M104 448 q22 -16 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0" fill="none" stroke="#ccfbf1" stroke-width="12" stroke-linecap="round"/>
+  <rect x="150" y="398" width="212" height="18" rx="9" fill="#a9a3cf"/>
+  <path d="M104 448 q22 -16 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0" fill="none" stroke="#a5b4fc" stroke-width="12" stroke-linecap="round"/>
 </svg>

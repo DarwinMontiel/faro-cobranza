@@ -2,25 +2,31 @@
  * Faro Cobranza · sistema de diseño
  * CSS moderno sin frameworks: variables (tokens), nesting nativo, :has(), grid y modo oscuro.
  * Propshaft sirve el archivo tal cual; no hay paso de compilación.
+ *
+ * Identidad propia: un faro de noche. Índigo nocturno, el faro con franjas rojas y blancas y
+ * la luz cálida del haz (--beam) para lo que está activo. Contraste verificado (WCAG AA).
  */
 
 :root {
-  --bg: #f4f7f8;
+  --bg: #f6f5fb;
   --surface: #ffffff;
-  --surface-2: #f8fafb;
-  --border: #e2e8ec;
-  --text: #0f1f2e;
-  --muted: #5b6b78;
-  --accent: #0d9488;
-  --accent-strong: #0f766e;
-  --accent-soft: #ccfbf1;
+  --surface-2: #f3f1fa;
+  --border: #e3e0f0;
+  --text: #1c1838;
+  --muted: #5d5878;
+  --accent: #4338ca;
+  --accent-strong: #3730a3;
+  --accent-soft: #e6e4fb;
+  --on-accent: #ffffff;
+  --beam: #ffd166;
+  --beam-soft: rgb(255 209 102 / 18%);
   --ok: #15803d;      --ok-soft: #dcfce7;
   --info: #1d4ed8;    --info-soft: #dbeafe;
   --warn: #b45309;    --warn-soft: #fef3c7;
   --danger: #b91c1c;  --danger-soft: #fee2e2;
-  --sidebar: #0f1f2e;
-  --radius: 12px;
-  --shadow: 0 1px 2px rgb(15 31 46 / 6%), 0 6px 18px rgb(15 31 46 / 5%);
+  --sidebar: #1c1838;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgb(28 24 56 / 6%), 0 8px 22px rgb(28 24 56 / 6%);
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
   color-scheme: light;
@@ -28,20 +34,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0b141c;
-    --surface: #111d27;
-    --surface-2: #0f1922;
-    --border: #1f2f3c;
-    --text: #e6edf2;
-    --muted: #8aa0b0;
-    --accent: #2dd4bf;
-    --accent-strong: #5eead4;
-    --accent-soft: #134e4a;
+    --bg: #0f0d1f;
+    --surface: #17142c;
+    --surface-2: #1b1833;
+    --border: #2c2850;
+    --text: #ece9fb;
+    --muted: #a7a2c8;
+    --accent: #a5b4fc;
+    --accent-strong: #c7d2fe;
+    --accent-soft: #26215a;
+    --on-accent: #17142c;
+    --beam-soft: rgb(255 209 102 / 10%);
     --ok: #4ade80;      --ok-soft: #14321f;
     --info: #93c5fd;    --info-soft: #172a4a;
     --warn: #fbbf24;    --warn-soft: #3a2a0b;
     --danger: #f87171;  --danger-soft: #3b1414;
-    --sidebar: #08111a;
+    --sidebar: #0a0817;
     color-scheme: dark;
   }
 }
@@ -62,21 +70,24 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
 
 .sidebar {
   position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 24px;
-  padding: 20px 14px; background: var(--sidebar); color: #dbe5ec;
+  padding: 20px 14px; color: #e4e1f5;
+  /* La luz del faro baña la esquina de la marca. */
+  background: radial-gradient(130% 55% at 0 0, rgb(255 209 102 / 11%), transparent 62%), var(--sidebar);
 }
 .sidebar__brand, .auth__brand { display: flex; align-items: center; gap: 10px; }
-.sidebar__brand small, .sidebar__user small, .auth__brand small { display: block; color: #8fa5b5; font-size: 12px; }
+.sidebar__brand small, .sidebar__user small { display: block; color: #a9a3cf; font-size: 12px; }
+.auth__brand small { display: block; color: var(--muted); font-size: 12px; }
 .logo {
   width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
-  background: #0d9488; color: #fff; font-weight: 800; font-size: 18px; flex-shrink: 0;
+  background: var(--sidebar); color: #fff; font-weight: 800; font-size: 18px; flex-shrink: 0;
 }
 .nav { display: grid; gap: 2px; }
 .nav__link {
   display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px;
-  color: #c2d0da; font-weight: 500;
+  color: #cbc6e8; font-weight: 500;
   &:hover { background: rgb(255 255 255 / 6%); text-decoration: none; color: #fff; }
 }
-.nav__link--active { background: rgb(13 148 136 / 22%); color: #fff; }
+.nav__link--active { background: rgb(255 209 102 / 14%); color: #fff; box-shadow: inset 3px 0 0 var(--beam); }
 .nav__icon { width: 18px; text-align: center; opacity: .8; }
 .sidebar__user {
   margin-top: auto; display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center;
@@ -86,7 +97,7 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
 }
 .avatar {
   width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
-  background: #1e3a4c; color: #fff; font-weight: 700; font-size: 13px;
+  background: #3a3470; color: #fff; font-weight: 700; font-size: 13px;
 }
 
 .main { padding: 28px 32px 48px; display: grid; gap: 20px; align-content: start; min-width: 0; }
@@ -115,7 +126,9 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
 .kpis { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); }
 @media (min-width: 1000px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
 .kpi {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  /* Destello del haz en la esquina de cada indicador. */
+  background: radial-gradient(circle at 100% 0, var(--beam-soft), transparent 46%), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
   padding: 14px 16px; box-shadow: var(--shadow);
   h2 { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; }
   p { margin: 6px 0 2px; font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -130,7 +143,7 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
   &:hover { text-decoration: none; }
   &:disabled { opacity: .6; cursor: progress; }
 }
-.btn--primary { background: var(--accent); color: #fff; &:hover { background: var(--accent-strong); } }
+.btn--primary { background: var(--accent); color: var(--on-accent); &:hover { background: var(--accent-strong); } }
 .btn--ghost { background: transparent; color: var(--text); border-color: var(--border); &:hover { background: var(--surface-2); } }
 .btn--sm { padding: 5px 10px; font-size: 12.5px; }
 .btn--block { width: 100%; }
@@ -151,7 +164,7 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
   color: var(--text); font-size: 12.5px; font-weight: 500;
   &:hover { border-color: var(--accent); text-decoration: none; }
 }
-.chip--active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip--active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .table-wrap { overflow-x: auto; }
 .table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -206,7 +219,7 @@ input:not([type=hidden], [type=submit], [type=checkbox]), select, textarea {
 .bars li { display: grid; grid-template-columns: 64px 1fr 130px; align-items: center; gap: 10px; }
 .bars__label { font-weight: 600; }
 .bars__track { height: 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; }
-.bars__fill { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.bars__fill { display: block; height: 100%; border-radius: 999px; background: var(--ok); }
 .bars__fill--info { background: var(--info); }
 .bars__fill--warn { background: var(--warn); }
 .bars__fill--danger { background: var(--danger); }
