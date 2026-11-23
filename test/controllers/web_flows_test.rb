@@ -19,15 +19,15 @@ class WebFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "búsqueda de clientes por documento" do
-    get clients_path, params: { q: "1012" }
+    get clients_path, params: { q: "9912" }
     assert_response :success
     assert_select "turbo-frame#clients td", text: "Laura Gómez Ríos"
     assert_select "turbo-frame#clients td", text: "Andrés Pérez Duarte", count: 0
   end
 
   test "crear cliente normaliza el documento y valida" do
-    post clients_path, params: { client: { document_number: "52.123.456", full_name: "nuevo cliente", city: "Cali", segment: "pyme" } }
-    client = Client.find_by!(document_number: "52123456")
+    post clients_path, params: { client: { document_number: "99.123.456", full_name: "nuevo cliente", city: "Cali", segment: "pyme" } }
+    client = Client.find_by!(document_number: "99123456")
     assert_redirected_to client_path(client)
     assert_equal "Nuevo Cliente", client.full_name
 

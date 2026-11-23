@@ -8,7 +8,7 @@ class Client < ApplicationRecord
   enum :segment, { masivo: "masivo", preferente: "preferente", pyme: "pyme" },
     default: :masivo, validate: true
 
-  # "1.012.345.678" o "CC 1012345678" -> "1012345678"
+  # "9.912.345.678" o "CC 9912345678" -> "9912345678"
   normalizes :document_number, with: ->(value) { value.to_s.gsub(/\D/, "") }
   normalizes :full_name, with: ->(value) { value.squish.split.map(&:capitalize).join(" ") }
   normalizes :email, with: ->(value) { value.strip.downcase.presence }

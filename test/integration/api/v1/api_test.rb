@@ -16,7 +16,7 @@ module Api
       test "lista y busca clientes con paginación" do
         get api_v1_clients_path, headers: api_headers, params: { q: "laura", per_page: 1 }
         assert_response :success
-        assert_equal [ "1012345678" ], json["data"].pluck("document_number")
+        assert_equal [ "9912345678" ], json["data"].pluck("document_number")
         assert_equal({ "page" => 1, "per_page" => 1, "total" => 1, "pages" => 1 }, json["meta"])
       end
 

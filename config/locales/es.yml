@@ -132,6 +132,10 @@ es:
         created_at: "Creado"
     errors:
       models:
+        obligation:
+          attributes:
+            past_due_since:
+              before_disbursement: "no puede ser anterior a la fecha de desembolso"
         collection_activity:
           attributes:
             occurred_at:

@@ -14,6 +14,13 @@ Formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) · [SemVer](
 - El detalle de la obligación mostraba como máximo 50 gestiones registradas en el contador.
 - `docs/openapi.yaml` usaba `nullable` (OpenAPI 3.0) en un documento 3.1.
 - `docs/deployment.md`: con `DATABASE_URL` también hacen falta `CACHE_/QUEUE_/CABLE_DATABASE_URL`.
+- Los datos de demostración podían tener mora desde antes del desembolso. El modelo ahora lo
+  valida y los seeds cuentan el desembolso hacia atrás desde el primer impago.
+- `bundler-audit` reportaba dos avisos en puma 8.1.1; se actualiza a 8.1.2.
+
+### Cambiado
+- Los datos de demostración y de pruebas usan cédulas con prefijo 99 y celulares con prefijo 399,
+  que no corresponden a personas ni a líneas reales. Capturas de `docs/images` regeneradas.
 
 ## [1.1.0] - 2026-11-13
 

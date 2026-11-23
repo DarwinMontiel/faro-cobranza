@@ -1,13 +1,13 @@
 laura:
-  document_number: "1012345678"
+  document_number: "9912345678"
   full_name: Laura Gómez Ríos
   email: laura@correo.test
-  phone: "3001234567"
+  phone: "3990001234"
   city: Bogotá
   segment: masivo
 
 andres:
-  document_number: "1023456789"
+  document_number: "9923456789"
   full_name: Andrés Pérez Duarte
   city: Medellín
   segment: preferente

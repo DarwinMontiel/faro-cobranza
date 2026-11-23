@@ -26,6 +26,16 @@ class ObligationTest < ActiveSupport::TestCase
     assert_equal 0, Obligation.days_past_due_on(Date.current + 5), "un vencimiento futuro no genera mora"
   end
 
+  test "la mora no puede empezar antes del desembolso" do
+    obligation = obligations(:laura_loan)
+    obligation.past_due_since = obligation.disbursed_on - 1
+    assert_not obligation.valid?
+    assert_includes obligation.errors[:past_due_since], "no puede ser anterior a la fecha de desembolso"
+
+    obligation.past_due_since = obligation.disbursed_on + 30
+    assert obligation.valid?
+  end
+
   test "calcula el mínimo para un acuerdo con la política de cobertura" do
     assert_equal BigDecimal("1470000"), obligations(:laura_card).minimum_agreement_amount
   end

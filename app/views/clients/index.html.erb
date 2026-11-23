@@ -6,7 +6,7 @@
   <%= form_with url: clients_path, method: :get, class: "search",
         data: { controller: "debounce-submit", turbo_frame: "clients", turbo_action: "advance" } do |form| %>
     <%= form.label :q, "Buscar cliente", class: "sr-only" %>
-    <%= form.search_field :q, value: @query, placeholder: "Ej.: Laura Gómez o 1012345678", autofocus: true,
+    <%= form.search_field :q, value: @query, placeholder: "Ej.: Laura Gómez o 9912345678", autofocus: true,
           autocomplete: "off", data: { action: "input->debounce-submit#submit" } %>
   <% end %>
 

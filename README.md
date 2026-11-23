@@ -181,7 +181,7 @@ Client), pega el token del seed y envía las solicitudes; el acuerdo se envía d
 ## Pruebas y calidad
 
 ```bash
-bin/rails test            # 98 pruebas: modelos, servicios, job, consultas, correo, controladores y API
+bin/rails test            # 99 pruebas: modelos, servicios, job, consultas, correo, controladores y API
 bin/rails test:system     # navegador real (Chrome headless): Turbo Streams y Stimulus
 bin/rubocop               # estilo (rubocop-rails-omakase)
 bin/brakeman              # análisis estático de seguridad

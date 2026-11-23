@@ -33,6 +33,7 @@ class Obligation < ApplicationRecord
   validates :principal_balance, numericality: { greater_than_or_equal_to: 0 }
   validates :days_past_due, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :disbursed_on, presence: true
+  validate :past_due_after_disbursement
 
   # Los días de mora se derivan de past_due_since (vencimiento impago más antiguo); la columna
   # days_past_due es un valor materializado para ordenar e indexar, que RefreshDelinquencyJob
@@ -82,5 +83,12 @@ class Obligation < ApplicationRecord
   private
     def derive_days_past_due
       self.days_past_due = self.class.days_past_due_on(past_due_since)
+    end
+
+    # La mora empieza con una cuota impaga: no puede ser anterior al desembolso del crédito.
+    def past_due_after_disbursement
+      return unless past_due_since && disbursed_on && past_due_since < disbursed_on
+
+      errors.add(:past_due_since, :before_disbursement)
     end
 end

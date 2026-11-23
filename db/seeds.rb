@@ -26,14 +26,16 @@ ActiveRecord::Base.transaction do
   documents = Set.new
   clients = 120.times.map do
     document = loop do
-      candidate = rng.rand(1_000_000_000..1_199_999_999).to_s
+      # Prefijo 99: fuera del rango de cédulas expedidas, para no coincidir con personas reales.
+      candidate = rng.rand(9_900_000_000..9_999_999_999).to_s
       break candidate if documents.add?(candidate)
     end
     Client.create!(
       document_number: document,
       full_name: "#{pick.(FIRST_NAMES)} #{pick.(LAST_NAMES)} #{pick.(LAST_NAMES)}",
       email: rng.rand < 0.8 ? "cliente#{document[-4..]}@correo.test" : nil,
-      phone: rng.rand < 0.9 ? "3#{rng.rand(100_000_000..199_999_999)}" : nil,
+      # Prefijo 399: no está asignado a ningún operador móvil en Colombia.
+      phone: rng.rand < 0.9 ? "399#{rng.rand(1_000_000..9_999_999)}" : nil,
       city: Client::CITIES[[ 0, 0, 0, 1, 1, 2, 3, 4, 5, 6, 7 ].sample(random: rng)],
       segment: %w[masivo masivo masivo preferente pyme].sample(random: rng)
     )
@@ -51,7 +53,8 @@ ActiveRecord::Base.transaction do
         principal_balance: (rng.rand(800_000..25_000_000) / 1000) * 1000,
         past_due_since: days.positive? ? Date.current - days : nil,
         status: days.positive? ? :delinquent : :current,
-        disbursed_on: Date.current - rng.rand(120..1_200)
+        # La mora empieza después del desembolso: se cuenta hacia atrás desde el primer impago.
+        disbursed_on: Date.current - days - rng.rand(60..1_100)
       )
     end
   end
