@@ -31,6 +31,10 @@ nunca se versiona.
 2. Variables: `RAILS_MASTER_KEY`, `DATABASE_URL` (o `DB_HOST` + `FARO_COBRANZA_DATABASE_PASSWORD`),
    `APP_HOST` y, en instancias pequeñas, `SOLID_QUEUE_IN_PUMA=true` para correr los *jobs*
    (incluido el cierre diario) dentro de Puma.
+   `DATABASE_URL` solo configura la base principal: Solid Cache, Solid Queue y Solid Cable usan
+   sus propias bases (`cache`, `queue`, `cable` en `config/database.yml`), así que con una base
+   administrada también hay que definir `CACHE_DATABASE_URL`, `QUEUE_DATABASE_URL` y
+   `CABLE_DATABASE_URL` (pueden apuntar a bases distintas del mismo servidor).
 3. Comando de *release*: `bin/rails db:prepare`.
 
 ## Variables de entorno
@@ -39,6 +43,7 @@ nunca se versiona.
 |---|---|---|
 | `RAILS_MASTER_KEY` | sí | Descifra `config/credentials.yml.enc`. |
 | `FARO_COBRANZA_DATABASE_PASSWORD` / `DB_HOST` | sí (o `DATABASE_URL`) | Conexión a PostgreSQL. |
+| `CACHE_DATABASE_URL`, `QUEUE_DATABASE_URL`, `CABLE_DATABASE_URL` | con `DATABASE_URL` | Bases de Solid Cache, Solid Queue y Solid Cable. |
 | `APP_HOST` | recomendada | Dominio público. Se usa en los enlaces de los correos y como lista blanca de `Host` (protección contra DNS rebinding). |
 | `MAILER_FROM` | no | Remitente, p. ej. `Faro Cobranza <no-responder@midominio.com>`. |
 | `SMTP_ADDRESS`, `SMTP_PORT` | no | Servidor SMTP (puerto 587 con STARTTLS por defecto). |

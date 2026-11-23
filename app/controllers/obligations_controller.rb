@@ -10,6 +10,8 @@ class ObligationsController < ApplicationController
   def show
     @obligation = Obligation.includes(:client).find_by!(number: params[:number])
     @activities = @obligation.collection_activities.includes(:user).limit(50)
+    # El historial muestra las 50 más recientes; el contador, todas.
+    @activities_count = @obligation.collection_activities.count
     @agreements = @obligation.payment_agreements.includes(:installments)
     @activity = @obligation.collection_activities.build
   end

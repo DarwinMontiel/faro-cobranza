@@ -2,6 +2,19 @@
 
 Formato [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) · [SemVer](https://semver.org/lang/es/).
 
+## [Sin publicar]
+
+### Corregido
+- CI fallaba en Brakeman: `bin/brakeman` exige la última versión (`--ensure-latest`) y Ruby 3.4.11
+  tiene una vulnerabilidad crítica (CVE-2026-132825). Brakeman pasa a 8.1.1 y Ruby a 3.4.13
+  (`.ruby-version` y `Dockerfile`).
+- `bundler-audit` reportaba `net-ssh` 7.3.8 (dependencia de Kamal); se actualiza a 7.3.10.
+- Se podía registrar un acuerdo (web o API) sobre una obligación cancelada o sin saldo: la
+  política de cobertura no aplicaba y la obligación volvía a quedar "En acuerdo".
+- El detalle de la obligación mostraba como máximo 50 gestiones registradas en el contador.
+- `docs/openapi.yaml` usaba `nullable` (OpenAPI 3.0) en un documento 3.1.
+- `docs/deployment.md`: con `DATABASE_URL` también hacen falta `CACHE_/QUEUE_/CABLE_DATABASE_URL`.
+
 ## [1.1.0] - 2026-11-13
 
 ### Cambiado

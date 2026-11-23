@@ -28,6 +28,7 @@ class PaymentAgreement < ApplicationRecord
   validates :notes, length: { maximum: 2_000 }
   validate :installments_count_in_range
   validate :installments_add_up_to_total
+  validate :obligation_has_balance, on: :create, if: :obligation
   validate :coverage_within_policy, if: -> { obligation && total_amount }
   validate :due_dates_are_valid, on: :create
   validate :single_active_agreement, if: :active?
@@ -84,6 +85,14 @@ class PaymentAgreement < ApplicationRecord
 
       errors.add(:total_amount, :does_not_match_installments,
         sum: ActiveSupport::NumberHelper.number_to_currency(sum, precision: 0))
+    end
+
+    # Sin saldo no hay nada que negociar: la política de cobertura no aplicaría y la obligación
+    # cancelada volvería a quedar "En acuerdo".
+    def obligation_has_balance
+      return unless obligation.paid_off? || obligation.principal_balance.to_d.zero?
+
+      errors.add(:obligation, :without_balance)
     end
 
     def coverage_within_policy

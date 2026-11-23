@@ -6,7 +6,7 @@
 #   docker run -d -p 80:80 -e RAILS_MASTER_KEY=<valor de config/master.key> --name faro-cobranza faro-cobranza
 
 # RUBY_VERSION debe coincidir con .ruby-version
-ARG RUBY_VERSION=3.4.11
+ARG RUBY_VERSION=3.4.13
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Directorio de la aplicación

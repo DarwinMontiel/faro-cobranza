@@ -72,4 +72,11 @@ class PaymentAgreementTest < ActiveSupport::TestCase
     assert_equal 450_000, agreement.paid_amount
     assert_equal installments(:andres_second), agreement.next_installment
   end
+
+  test "no se negocia un acuerdo sobre una obligación cancelada o sin saldo" do
+    @obligation.update_columns(status: "paid_off", principal_balance: 0)
+    agreement = build_agreement(total: 2_000_000)
+    assert_not agreement.valid?
+    assert agreement.errors.of_kind?(:obligation, :without_balance)
+  end
 end

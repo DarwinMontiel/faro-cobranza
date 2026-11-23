@@ -85,6 +85,20 @@ module Api
         get api_v1_payment_agreement_path("RPA-7f3c"), headers: api_headers
         assert_equal "active", json.dig("data", "status")
       end
+
+      test "un acuerdo sobre una obligación cancelada responde 422 y no la reabre" do
+        obligations(:laura_card).update_columns(status: "paid_off", principal_balance: 0, past_due_since: nil, days_past_due: 0)
+        body = {
+          obligation_number: "OB-0000001", reference: "RPA-cancelada", total_amount: 500_000,
+          installments: plan_attributes(total: 500_000, count: 1).map { |i| i.merge(due_on: i[:due_on].iso8601) }
+        }
+        assert_no_difference -> { PaymentAgreement.count } do
+          post api_v1_payment_agreements_path, headers: api_headers, as: :json, params: body
+        end
+        assert_response :unprocessable_entity
+        assert json.dig("error", "details", "obligation").present?
+        assert obligations(:laura_card).reload.paid_off?
+      end
     end
   end
 end

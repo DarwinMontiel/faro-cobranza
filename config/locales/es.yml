@@ -152,6 +152,7 @@ es:
               above_maximum_coverage: "no puede superar el %{percent} % del saldo de capital"
             obligation:
               already_has_active_agreement: "ya tiene un acuerdo de pago vigente"
+              without_balance: "está cancelada o no tiene saldo por negociar"
 
   buckets:
     title: "Franja de mora"
