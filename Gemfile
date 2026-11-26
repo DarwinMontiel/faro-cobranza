@@ -62,5 +62,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   # Ninguna prueba sale a internet: las APIs externas se simulan
-  gem "webmock", "~> 3.34"
+  gem "webmock", "~> 3.38"
 end
